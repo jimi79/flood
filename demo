@@ -1,0 +1,18 @@
+#!/bin/bash
+
+x=$1
+y=$2 
+cols=$3
+
+
+[ -z $x ] && x=19
+[ -z $y ] && y=19
+[ -z $cols ] && cols=8
+
+bx=$((x/2))
+by=$((y/2))
+
+
+bin/flood_create $x $y $cols > /tmp/board
+cat /tmp/board | bin/flood_solve bx=$bx by=$by > /tmp/answer
+cat /tmp/answer /tmp/board | bin/flood_print bx=$bx by=$by

@@ -1,0 +1,47 @@
+Define what bin i will do. like one to generate an array (will return a list of strings), one to parse it (will need to read stdin) and solve it, one to display it, and so on.
+
+
+flood-create # will output a list of strings of random from 0 to x for size_x and size_y
+
+
+python should be able to display an array with two stdin : the initial array and the solution. 
+
+i would like to do what ?
+
+soluce = $(cat array | solve)
+
+python -array arrayfile -soluce solucestring
+
+
+
+
+---------
+
+how to sort a list based on the length of strings ?
+
+first we need to try to update
+
+and in python i stored 1000 versions of the board....
+damn
+
+
+
+
+ok, i need :
+one array of 1000, of strings of size like 200. that is the path
+one array of integer, that is the number of cells
+one array of array of array, that is the actual situation of the board for the ith path
+if i need some place in an array to study a new path, then i removed the least good path already stored, based on the number of cells
+
+by design, i avoid paths where the previous move was identical
+
+
+
+--
+doesn't work with non square matrices...
+do a print that displays in a fixed place, and just update what's need to be updated
+
+
+
+
+https://codegolf.stackexchange.com/questions/26232/create-a-flood-paint-ai
