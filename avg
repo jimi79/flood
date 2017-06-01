@@ -1,0 +1,2 @@
+#!/bin/bash
+wc -c challenge/out/*|head -n -1|awk '{size+=$1-1;c++} END {print size/c}'
