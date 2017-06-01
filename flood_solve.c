@@ -18,20 +18,6 @@ int print_path(int path[MAX_PATH], int path_length) // only for debug
 	return 0;
 }
 
-int get_covert(int owned[MAX_SIZE_X][MAX_SIZE_Y])
-{
-	int cpt=0;
-	int i,j;
-	for (i=0;i<MAX_SIZE_X;i++)
-	{
-		for (j=0;j<MAX_SIZE_Y;j++)
-		{
-			cpt+=owned[i][j]==1;
-		}
-	}
-	return cpt;
-}
-
 int main(int argc, char *argv[])
 { 
 	FILE *in = stdin; 

@@ -8,19 +8,6 @@
 // solve an input, and output just a sequence of datas
 // will also read some command line options, to define the max size of array of solutions
 
-int init_print_coverage(int height_board) {
-	int row=height_board+2;
-	printf("\033[0m\033[%d;%dHcolor:", row, 0);
-	printf("\033[0m\033[%d;%dHcoverage:", row+1, 0);
-}
-
-int print_coverage(int height_board, int step, int color, int coverage) { // step is the nth step in the process
-	int row=height_board+2;
-	int col=step*4+10; 
-	printf("\033[0m\033[%d;%dH%d", row, col, color);
-	printf("\033[0m\033[%d;%dH%d", row+1, col, coverage);
-}
-
 int main(int argc, char *argv[])
 { 
 	FILE *in = stdin; 
@@ -94,23 +81,24 @@ int main(int argc, char *argv[])
 		}
 	} 
 
-	printf("\033[2J\033[1;1H");
 	owned[begin_x][begin_y]=1;
 	update(board, owned, size_x, size_y, 0);
-
-	print_board(board, owned, size_x, size_y); // doesn't locate the cursor
-	init_print_coverage(size_y);
 	char c;
+	printf("color   : ");
 	for (i=0;i<path_length;i++)
 	{
 		col=path[i];
-		change_color(board, owned, col, size_x, size_y, 1);
-		update(board, owned, size_x, size_y, 1);
-		printf("\033[%d;%dH", size_y+2, 0);
-		print_coverage(size_y, i, col, get_covert(owned));
-		fflush(stdout);
-		usleep(300000);
+		printf("%4d", col);
 	}
-	printf("\033[0m\n");
+
+	printf("\ncoverage: ");
+	for (i=0;i<path_length;i++)
+	{ 
+		col=path[i]; 
+		change_color(board, owned, col, size_x, size_y, 0);
+		update(board, owned, size_x, size_y, 0);
+		printf("%4d", get_covert(owned));
+	}
+	printf("\n");
 
 }

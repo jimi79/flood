@@ -19,4 +19,4 @@ bin/flood_create $x $y $cols > /tmp/board
 cat /tmp/board | bin/flood_solve bx=$bx by=$by mp=$mp > /tmp/answer
 cat /tmp/answer /tmp/board | bin/flood_print bx=$bx by=$by
 answer=$(cat /tmp/answer)
-printf "\nAnswer is %s. Size is %d\n" $answer ${#answer}
+printf "\nAnswer is %s. Length is %d\n" $answer ${#answer}

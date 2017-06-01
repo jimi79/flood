@@ -3,7 +3,7 @@ SOURCE=./
 CFLAGS=-ggdb
 LIBS=flood_lib.c 
 
-LIST=$(BIN)/flood_solve $(BIN)/flood_create $(BIN)/flood_print
+LIST=$(BIN)/flood_solve $(BIN)/flood_create $(BIN)/flood_print $(BIN)/flood_print_coverage
 
 all: $(LIST)
 
