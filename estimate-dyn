@@ -1,15 +1,10 @@
 #!/bin/bash
 
 tot=100000
-goal=$((19*$tot))
-maxp=$(cat /tmp/maxp)
-
 inotifywait -q -e close_write -m --format "%w%f" challenge/out | while read filename; do 
 	count=$(($count + 1))
 	nl=$(($(wc -c < $filename) - 1))
 	sum=$(($sum + $nl))
 	avg=$(($sum * $tot / $count)) 
-	[ $avg -gt $tot ] && maxp=$(($maxp+10))
-	[ $avg -lt $tot ] && maxp=$(($maxp-10)) # wrong, because avg takes time to go down. we should like avg the last 5 ones
-	printf "last one %d, avg = %10.10f, new max_path = %d\n" $nl $avg $maxp
+	printf "last one %d, estimation = %d\n" $nl $avg $maxp
 done 

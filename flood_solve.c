@@ -127,12 +127,12 @@ int main(int argc, char *argv[])
 			max_cov_index=0;
 			for (i=0;i < max_paths_check; i++) 
 			{
-				if (coverts[(1-swap)*MAX_PATHS+i] > max_cov) {
-					max_cov_index=(1-swap)*MAX_PATHS+i;
+				if (coverts[(1-swap)*max_paths_check+i] > max_cov) {
+					max_cov_index=(1-swap)*max_paths_check+i;
 					max_cov=coverts[max_cov_index];
 				}
 			} 
-			print_path(paths[swap*MAX_PATHS+max_cov_index], path_length); 
+			print_path(paths[swap*max_paths_check+max_cov_index], path_length); 
 			fprintf(stderr, "path too long, %d, coverage of %d\n", path_length, max_cov); 
 			return 3;
 		}
@@ -140,9 +140,9 @@ int main(int argc, char *argv[])
 
 		max_cov=-1;
 		max_cov_index=0;
-		for (j=0;j < MAX_PATHS; j++) 
+		for (j=0;j < max_paths_check; j++) 
 		{
-			if (coverts[(1-swap)*MAX_PATHS+j] > max_cov) {
+			if (coverts[(1-swap)*max_paths_check+j] > max_cov) {
 				max_cov_index=(1-swap)*max_paths_check+j;
 				max_cov=coverts[max_cov_index];
 			}
@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
 					update(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], size_x, size_y, 0);
 						
 					// check if it's a win
-					cov=get_covert(owneds[(1-swap)*MAX_PATHS+j]);
+					cov=get_covert(owneds[(1-swap)*max_paths_check+j]);
 					coverts[(1-swap)*max_paths_check+j]=cov;
 					if (cov==size_x*size_y) { win=1; index_win=(1-swap)*max_paths_check+j; }; 
 				} 
