@@ -21,14 +21,15 @@ int main(int argc, char *argv[])
 	int size_y=0; // number of lines 
 	int begin_x=0;
 	int begin_y=0;
-	short int path[max_path]; // longuest path will be 100
-	short int board[max_size_x][max_size_y];
-	short int owned[max_size_x][max_size_y];
+	int max_paths_check=0; // useless for print
+	static int path[MAX_PATH]; // longuest path will be 100
+	static int board[MAX_SIZE_X][MAX_SIZE_Y];
+	static int owned[MAX_SIZE_X][MAX_SIZE_Y];
 	int path_length; 
 
 	int col, max_col;
 
-	parse_parameters(argc, argv, &begin_x, &begin_y);
+	parse_parameters(argc, argv, &begin_x, &begin_y, &max_paths_check);
 
 	j=0;
 	int end=0;

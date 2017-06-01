@@ -1,7 +1,7 @@
 BIN=./bin
 SOURCE=./
 CFLAGS=-ggdb
-LIBS=flood_lib.c const.c
+LIBS=flood_lib.c 
 
 LIST=$(BIN)/flood_solve $(BIN)/flood_create $(BIN)/flood_print
 

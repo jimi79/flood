@@ -3,16 +3,20 @@
 x=$1
 y=$2 
 cols=$3
+mp=$4
 
 
 [ -z $x ] && x=19
 [ -z $y ] && y=19
 [ -z $cols ] && cols=8
+[ -z $mp ] && mp=100
 
 bx=$((x/2))
 by=$((y/2))
 
 
 bin/flood_create $x $y $cols > /tmp/board
-cat /tmp/board | bin/flood_solve bx=$bx by=$by > /tmp/answer
+cat /tmp/board | bin/flood_solve bx=$bx by=$by mp=$mp > /tmp/answer
 cat /tmp/answer /tmp/board | bin/flood_print bx=$bx by=$by
+answer=$(cat /tmp/answer)
+printf "\nAnswer is %s. Size is %d\n" $answer ${#answer}

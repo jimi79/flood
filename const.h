@@ -1,5 +1,5 @@
-extern const int max_paths;
-extern const int max_size_x;
-extern const int max_size_y;
-extern const int max_path;
-extern const int debug;
+#define MAX_PATHS 10000
+#define MAX_SIZE_X 50
+#define MAX_SIZE_Y 50
+#define MAX_PATH 200
+#define DEBUG 0
