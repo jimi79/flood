@@ -3,11 +3,11 @@ a=($(wc -c challenge/out/answer*|head -n -1|awk '{if ($1>0) {sum+=$1-1;n++}} END
 sum=${a[0]}
 count=${a[1]}
 
-while true; do
-	printf "%10.10f\n" $(echo "10k $sum $count / p "|dc)
-	filename=challenge/out/$(inotifywait -q challenge/out/ | awk '{print $3}')
+inotifywait -q -e close_write -m --format "%w%f" challenge/out | while read filename; do 
 	count=$(($count + 1))
-	sum=$(($sum + $(wc -c < $filename) - 1))
+	nl=$(($(wc -c < $filename) - 1))
+	sum=$(($sum + $nl))
+	printf "%d %10.10f\n" $nl $(echo "10k $sum $count / p "|dc)
 done
 
 
