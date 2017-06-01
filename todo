@@ -45,3 +45,6 @@ do a print that displays in a fixed place, and just update what's need to be upd
 
 
 https://codegolf.stackexchange.com/questions/26232/create-a-flood-paint-ai
+
+i could write a version of the program that use like 10 paths, then 100, then 1000, till it is able to match the number of steps the user is willing to use.
+I also need an option like maxpath=, so that i don't have to recompile
