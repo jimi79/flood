@@ -1,0 +1,13 @@
+#!/bin/bash
+a=($(wc -c challenge/out/answer*|head -n -1|awk '{if ($1>0) {sum+=$1-1;n++}} END {print sum" "n} '))
+sum=${a[0]}
+count=${a[1]}
+
+while true; do
+	printf "%10.10f\n" $(echo "10k $sum $count / p "|dc)
+	filename=challenge/out/$(inotifywait -q challenge/out/ | awk '{print $3}')
+	count=$(($count + 1))
+	sum=$(($sum + $(wc -c < $filename) - 1))
+done
+
+

@@ -6,14 +6,16 @@ dir=""
 oldavg=0
 for i in $b;do
 	s=$(cat $i|tr -d '\n'|wc -c)
-	size=$(($size+$s))
-	count=$(($count+1))
-	avg=$(($size * 100000 / $count)) 
-	if [ $oldavg -ne 0 ];then
-		[ $avg -gt $oldavg ] && dir="^" || dir="v"
+	if [ $s -ne 0 ];then
+		size=$(($size+$s))
+		count=$(($count+1))
+		avg=$(($size * 100000 / $count)) 
+		if [ $oldavg -ne 0 ];then
+			[ $avg -gt $oldavg ] && dir="^" || dir="v"
+		fi
+		oldavg=$avg
+		echo -en "\033[0G$avg  $dir   "
 	fi
-	oldavg=$avg
-	echo -en "\033[0G$avg  $dir   "
 done
 
 echo "" 
