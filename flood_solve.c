@@ -155,30 +155,24 @@ int main(int argc, char *argv[])
 					} 
 					update_owned_2(board, owned, col, size_x, size_y);
 					cov=get_covert(owned); 
-
-					//printf("last cov = %d, new cov = %d\n", last_cov, cov); // sometime new cov < cov... that doesn't sounds good
-
 					if (cov>last_cov) { 
 						if (count_path[1-swap]==max_paths_check) { // number of path for the destination 
 							// lets find the worst path of the destination
-							min_cov=size_x*size_y+1; // cannot be matched
-							for (k=0;k<max_paths_check;k++) 
+							min_cov=coverts[(1-swap)*max_paths_check];
+							j=0;
+							for (k=1;k<max_paths_check;k++) 
 							{
 								if (coverts[(1-swap)*max_paths_check+k] < min_cov) {
 									min_cov=coverts[(1-swap)*max_paths_check+j];
 									j=k;
 								}
 							} 
-							//printf("removing try %d, which covered %d\n", min_cov_index, min_cov);
 						}
 						else
 						{
 							j=count_path[1-swap]; // index of where we'll write
 							count_path[1-swap]=j+1;
-							//printf("count path = %d\n", count_path[1-swap]);
-						}
-
-						// i need to duplicate path, owned and board here !
+						} 
 						for (k=0;k<size_x;k++) {
 							for (l=0;l<size_y;l++) {
 								owneds[(1-swap)*max_paths_check+j][k][l]=owned[k][l];
