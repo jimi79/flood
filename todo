@@ -55,3 +55,6 @@ i need to store these restuls with diff max_path values, and i'll compare the co
 Meaning i need to modify board_print to display the evolution of the coverage, maybe at the bottom.
 like step 1, xxx% covered
 step 2, xxx% covered
+
+test if a lot of boards are similars.
+maybe print out all boards after solving to get an idea
