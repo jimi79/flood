@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 			paths[i][j]=-1; } }
 
 	owneds[0][begin_x][begin_y]=1;
-	update(boards[0], owneds[0], size_x, size_y, 0);
+	update_owned(boards[1], owneds[0], size_x, size_y, 0);
 	coverts[0]=get_covert(owneds[0]); 
 	int win=0; 
 	int index_win=0;
@@ -175,21 +175,15 @@ int main(int argc, char *argv[])
 							owneds[(1-swap)*max_paths_check+j][k][l]=owneds[swap*max_paths_check+i][k][l];
 						}
 					} 
-
 					for (k=0;k<path_length;k++) {
 						paths[(1-swap)*max_paths_check+j][k]=paths[swap*max_paths_check+i][k]; // that seems wrong
-					}
-
+					} 
 					coverts[(1-swap)*max_paths_check+j]=coverts[swap*max_paths_check+i]; // useless, will be recalculated 
 					paths[(1-swap)*max_paths_check+j][path_length]=col; 
-
-					// first, all cells owned turn to the new color
-					change_color(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], col, size_x, size_y, 0);
-					update(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], size_x, size_y, 0);
-						
-					// check if it's a win
+					update_owned(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], col, size_x, size_y); 
 					cov=get_covert(owneds[(1-swap)*max_paths_check+j]);
 					coverts[(1-swap)*max_paths_check+j]=cov;
+					// check if it's a win
 					if (cov==size_x*size_y) { win=1; index_win=(1-swap)*max_paths_check+j; }; 
 				} 
 			col++;

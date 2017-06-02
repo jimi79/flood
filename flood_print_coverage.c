@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 	} 
 
 	owned[begin_x][begin_y]=1;
-	update(board, owned, size_x, size_y, 0);
+	update_owned_2(board, owned, board[begin_x][begin_y], size_x, size_y);
 	char c;
 	printf("color   : ");
 	for (i=0;i<path_length;i++)
@@ -95,8 +95,7 @@ int main(int argc, char *argv[])
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
-		change_color(board, owned, col, size_x, size_y, 0);
-		update(board, owned, size_x, size_y, 0);
+		update_owned_2(board, owned, col, size_x, size_y, 0);
 		printf("%4d", get_covert(owned));
 	}
 	printf("\n");
