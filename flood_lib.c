@@ -74,21 +74,21 @@ int print_board(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZ
 		for (j=0;j<size_x;j++)
 		{
 			bg=board[j][i];
-			fprintf(out,"\033[%dm", bg+40);
+			if ((bg==2)||(bg==3)||(bg==6)||(bg==7)) 
+			{
+				fg=0;
+			}
+			else
+			{ 
+				fg=7; 
+			}
+			fprintf(out,"\033[%dm\033[%dm", fg+30, bg+40);
 			if (owned[j][i]==1) {
-				if ((bg==2)||(bg==3)||(bg==6)||(bg==7)) 
-				{
-					fg=0;
-				}
-				else
-				{ 
-					fg=7; 
-				}
-				fprintf(out,"\033[%dm**",fg+30);
+				fprintf(out,"**");
 			}
 			else
 			{
-				fprintf(out,"  ");
+				fprintf(out," %d", bg); // has to be an option
 			}
 			fprintf(out,"\033[0m");
 		}

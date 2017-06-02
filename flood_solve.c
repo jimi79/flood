@@ -33,11 +33,10 @@ int main(int argc, char *argv[])
 	int begin_y=0; 
 	int max_paths_check=100; // default value
 
-	// arrays are used to store paths, boards with these paths, owneds with these paths, number of cells covered. size is 2* MAX_PATH, because first 1000 are the ccurrent paths we have, and second 1000 are the paths that we calculated from the current paths. and each turn we swap : first turn, from 0 to 999 (max, could be less) are current path, and we store calculated path from 1000 to 1999. second turn, from 1000 to 1999 are the current paths, and we store from 0 to 999, overwriting the old paths we've found that we don't care anymore
-
 	static int paths[2*MAX_PATHS][MAX_PATH]; // longuest path will be 100
-	static int boards[2*MAX_PATHS][MAX_SIZE_X][MAX_SIZE_Y];
+	static int board[MAX_SIZE_X][MAX_SIZE_Y];
 	static int owneds[2*MAX_PATHS][MAX_SIZE_X][MAX_SIZE_Y];
+	static int owned[MAX_SIZE_X][MAX_SIZE_Y]; // temp 'owned' to check if some path is worth being stored
 	int coverts[2*MAX_PATHS]; // number of cells covered
 
 	int count_path[2]={1, 0};  // first arrays are size 1 (the initial status), second part of the arrays is size 0
@@ -78,7 +77,7 @@ int main(int argc, char *argv[])
 			} 
 			if (col < min_col) { min_col=col; }
 			if (col > max_col) { max_col=col; }
-			boards[0][j][i]=col;
+			board[j][i]=col;
 			owneds[0][j][i]=0; // while i'm storing the boards, i'm also initializing owneds
 			j+=1; 
 		}
@@ -91,7 +90,7 @@ int main(int argc, char *argv[])
 			paths[i][j]=-1; } }
 
 	owneds[0][begin_x][begin_y]=1;
-	update_owned_2(boards[0], owneds[0], boards[0][begin_x][begin_y], size_x, size_y);
+	update_owned_2(board, owneds[0], board[begin_x][begin_y], size_x, size_y);
 	coverts[0]=get_covert(owneds[0]); 
 	int win=0; 
 	int index_win=0;
@@ -99,12 +98,11 @@ int main(int argc, char *argv[])
 	int k,l;
 	int swap=0;
 	int last_col;
+	int last_cov; // old coverage
 	int cov; // coverage, cells owned
 	int min_cov; // min coverage for a section. will be used to find out which line i want to remove to make room
 	int max_cov;
-	int max_cov_index; // index of the minimu coverage
-
-
+	int max_cov_index; // index of the minimu coverage 
 
 
 	while (!win) {
@@ -146,47 +144,56 @@ int main(int argc, char *argv[])
 			last_col=paths[swap*max_paths_check+i][path_length-1];
 			col=min_col;
 			while ((!win) && (col <= max_col))
-			{
-				if ((path_length==0) || (col!=last_col)) // either it's the first path, either we change color
+			{ 
+				if ((path_length==0) || (col!=last_col)) // either it's the first path, either we change color, otherwise we shouldn't process that color
 				{
-					if (count_path[1-swap]==max_paths_check) { // number of path for the destination 
-						// lets find the worst path of the destination
-						min_cov=size_x*size_y+1; // cannot be matched
-						for (k=0;k<max_paths_check;k++) 
-						{
-							if (coverts[(1-swap)*max_paths_check+k] < min_cov) {
-								min_cov=coverts[(1-swap)*max_paths_check+j];
-								j=k;
-							}
-						} 
-						//printf("removing try %d, which covered %d\n", min_cov_index, min_cov);
-					}
-					else
-					{
-						j=count_path[1-swap]; // index of where we'll write
-						count_path[1-swap]=j+1;
-						//printf("count path = %d\n", count_path[1-swap]);
-					}
-
-					// i need to duplicate path, owned and board here !
+					last_cov=coverts[swap*max_paths_check+i];
 					for (k=0;k<size_x;k++) {
 						for (l=0;l<size_y;l++) {
-							boards[(1-swap)*max_paths_check+j][k][l]=boards[swap*max_paths_check+i][k][l];
-							owneds[(1-swap)*max_paths_check+j][k][l]=owneds[swap*max_paths_check+i][k][l];
+							owned[k][l]=owneds[swap*max_paths_check+i][k][l];
 						}
 					} 
-					for (k=0;k<path_length;k++) {
-						paths[(1-swap)*max_paths_check+j][k]=paths[swap*max_paths_check+i][k]; // that seems wrong
+					update_owned_2(board, owned, col, size_x, size_y);
+					cov=get_covert(owned); 
+
+					//printf("last cov = %d, new cov = %d\n", last_cov, cov); // sometime new cov < cov... that doesn't sounds good
+
+					if (cov>last_cov) { 
+						if (count_path[1-swap]==max_paths_check) { // number of path for the destination 
+							// lets find the worst path of the destination
+							min_cov=size_x*size_y+1; // cannot be matched
+							for (k=0;k<max_paths_check;k++) 
+							{
+								if (coverts[(1-swap)*max_paths_check+k] < min_cov) {
+									min_cov=coverts[(1-swap)*max_paths_check+j];
+									j=k;
+								}
+							} 
+							//printf("removing try %d, which covered %d\n", min_cov_index, min_cov);
+						}
+						else
+						{
+							j=count_path[1-swap]; // index of where we'll write
+							count_path[1-swap]=j+1;
+							//printf("count path = %d\n", count_path[1-swap]);
+						}
+
+						// i need to duplicate path, owned and board here !
+						for (k=0;k<size_x;k++) {
+							for (l=0;l<size_y;l++) {
+								owneds[(1-swap)*max_paths_check+j][k][l]=owned[k][l];
+							}
+						} 
+						for (k=0;k<path_length;k++) {
+							paths[(1-swap)*max_paths_check+j][k]=paths[swap*max_paths_check+i][k]; // that seems wrong
+						} 
+						paths[(1-swap)*max_paths_check+j][path_length]=col; 
+						coverts[(1-swap)*max_paths_check+j]=cov;
+						// check if it's a win
+						if (cov==size_x*size_y) { win=1; index_win=(1-swap)*max_paths_check+j; }; 
 					} 
-					coverts[(1-swap)*max_paths_check+j]=coverts[swap*max_paths_check+i]; // useless, will be recalculated 
-					paths[(1-swap)*max_paths_check+j][path_length]=col; 
-					update_owned_2(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], col, size_x, size_y); 
-					cov=get_covert(owneds[(1-swap)*max_paths_check+j]);
-					coverts[(1-swap)*max_paths_check+j]=cov;
-					// check if it's a win
-					if (cov==size_x*size_y) { win=1; index_win=(1-swap)*max_paths_check+j; }; 
-				} 
-			col++;
+				}
+				col++;
 			} 
 		} 
 		path_length+=1;
