@@ -1,4 +1,4 @@
 #!/bin/bash
 
-parallel --jobs 2 --eta "[ ! -f challenge/out/answer{} ] && cat challenge/in/flood{} | bin/flood_solve bx=9 by=9 mp=700 > challenge/out/answer{}" ::: $(seq 1 100000)
+parallel --jobs 2 --eta "[ ! -f challenge/out/answer{} ] && cat challenge/in/flood{} | bin/flood_solve bx=9 by=9 mp=1200 > challenge/out/answer{}" ::: $(seq 1 100000)
 

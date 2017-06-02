@@ -11,8 +11,8 @@ mp=$4
 [ -z $cols ] && cols=8
 [ -z $mp ] && mp=50
 
-bx=$((x/2))
-by=$((y/2))
+bx=$(($x/2))
+by=$(($y/2))
 
 
 bin/flood_create $x $y $cols > /tmp/board

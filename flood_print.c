@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
 	static int path[MAX_PATH]; // longuest path will be 100
 	static int board[MAX_SIZE_X][MAX_SIZE_Y];
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y];
+	static int owned2[MAX_SIZE_X][MAX_SIZE_Y];
 	int path_length; 
 
 	int col, max_col;
@@ -157,22 +158,33 @@ int main(int argc, char *argv[]) {
 			if (col > max_col) { max_col=col; }
 			board[j][i]=col;
 			owned[j][i]=0; // while i'm storing the boards, i'm also initializing owneds
+			owned2[j][i]=0; // while i'm storing the boards, i'm also initializing owneds //TODO remove
 			j+=1; 
 		}
 	} 
 
 	printf("\033[2J\033[1;1H");
 	owned[begin_x][begin_y]=1;
+	owned2[begin_x][begin_y]=1; // TODO remove
+	col=board[begin_x][begin_y];
+	update_color(board, owned, col, size_x, size_y, 0); 
 	update_owned(board, owned, size_x, size_y, 0); 
+	update_owned_2(board, owned2, col, size_x, size_y);  // TODO
 	print_board(board, owned, size_x, size_y); // doesn't locate the cursor
 	init_print_coverage(size_y);
 	char c;
 	for (i=0;i<path_length;i++)
 	{
 		col=path[i];
+		update_color(board, owned, col, size_x, size_y, 1);
 		update_owned(board, owned, size_x, size_y, 1);
+		update_owned_2(board, owned2, col, size_x, size_y); //TODO
+
+// i should compare with owned2 here, so i need two boards. 
+
 		printf("\033[%d;%dH", size_y+2, 0);
 		print_coverage(size_y, i, col, get_covert(owned));
+		print_coverage(size_y+3, i, col, get_covert(owned2)); // always 2.. what's wrong ?
 		fflush(stdout);
 		usleep(300000);
 	}

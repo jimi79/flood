@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
-		update_owned_2(board, owned, col, size_x, size_y, 0);
+		update_owned_2(board, owned, col, size_x, size_y);
 		printf("%4d", get_covert(owned));
 	}
 	printf("\n");

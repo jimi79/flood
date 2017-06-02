@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 			paths[i][j]=-1; } }
 
 	owneds[0][begin_x][begin_y]=1;
-	update_owned(boards[1], owneds[0], size_x, size_y, 0);
+	update_owned_2(boards[0], owneds[0], boards[0][begin_x][begin_y], size_x, size_y);
 	coverts[0]=get_covert(owneds[0]); 
 	int win=0; 
 	int index_win=0;
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 					} 
 					coverts[(1-swap)*max_paths_check+j]=coverts[swap*max_paths_check+i]; // useless, will be recalculated 
 					paths[(1-swap)*max_paths_check+j][path_length]=col; 
-					update_owned(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], col, size_x, size_y); 
+					update_owned_2(boards[(1-swap)*max_paths_check+j], owneds[(1-swap)*max_paths_check+j], col, size_x, size_y); 
 					cov=get_covert(owneds[(1-swap)*max_paths_check+j]);
 					coverts[(1-swap)*max_paths_check+j]=cov;
 					// check if it's a win
