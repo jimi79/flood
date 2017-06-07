@@ -1,2 +1,2 @@
 #!/bin/bash
-date -d@$1 -u +%H:%M:%S
+date -d@$1 -u +"%d %H:%M:%S"

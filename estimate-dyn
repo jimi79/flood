@@ -6,5 +6,5 @@ inotifywait -q -e close_write -m --format "%w%f" challenge/out | while read file
 	nl=$(($(wc -c < $filename) - 1))
 	sum=$(($sum + $nl))
 	avg=$(($sum * $tot / $count)) 
-	printf "last one %d, estimation = %d\n" $nl $avg $maxp
+	printf "last one $filename=%d, estimation=%d\n" $nl $avg $maxp
 done 
