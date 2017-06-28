@@ -17,19 +17,17 @@ int main(int argc, char *argv[])
 	char *buffer;
 	buffer=malloc(1);
 	int i=0,j=0;
-	int size_x=0; // length of a line
-	int size_y=0; // number of lines 
-	int begin_x=0;
-	int begin_y=0;
-	int max_paths_check=0; // useless for print
+
+	struct params p;
+	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_y=0; 
+	p.max_paths_check=0;
+
 	static int path[MAX_PATH]; // longuest path will be 100
 	static int board[MAX_SIZE_X][MAX_SIZE_Y];
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y];
 	int path_length; 
-
 	int col, max_col;
-
-	parse_parameters(argc, argv, &begin_x, &begin_y, &max_paths_check);
+	parse_parameters(argc, argv, &p);
 
 	j=0;
 	int end=0;
@@ -64,12 +62,12 @@ int main(int argc, char *argv[])
 		if (buffer[0]=='\n')
 		{
 			i+=1;
-			if (size_x==0)
+			if (p.size_x==0)
 			{
-				size_x=j;
+				p.size_x=j;
 			}
 			j=0;
-			size_y+=1;
+			p.size_y+=1;
 		}
 		else
 		{
@@ -81,8 +79,8 @@ int main(int argc, char *argv[])
 		}
 	} 
 
-	owned[begin_x][begin_y]=1;
-	update_owned_2(board, owned, board[begin_x][begin_y], size_x, size_y);
+	owned[p.begin_x][p.begin_y]=1;
+	update_owned_2(board, owned, board[p.begin_x][p.begin_y], &p);
 	char c;
 	printf("color   : ");
 	for (i=0;i<path_length;i++)
@@ -95,7 +93,7 @@ int main(int argc, char *argv[])
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
-		update_owned_2(board, owned, col, size_x, size_y);
+		update_owned_2(board, owned, col, &p);
 		printf("%4d", get_covert(owned));
 	}
 	printf("\n");

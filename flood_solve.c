@@ -25,23 +25,19 @@ int main(int argc, char *argv[])
 	char *buffer;
 	buffer=malloc(1);
 	int i=0,j=0;
-	int size_x=0; // length of a line
-	int size_y=0; // number of lines 
 	int min_col=9; // min col number
 	int max_col=0; // max col number
-	int begin_x=0;
-	int begin_y=0; 
-	int max_paths_check=100; // default value
 
+	struct params p;
+	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_x=0;
+	p.max_paths_check=100; p.display_color_number=1; p.display_star=0; p.display_stat=0; 
 	static int paths[2*MAX_PATHS][MAX_PATH]; // longuest path will be 100
 	static int board[MAX_SIZE_X][MAX_SIZE_Y];
 	static int owneds[2*MAX_PATHS][MAX_SIZE_X][MAX_SIZE_Y];
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y]; // temp 'owned' to check if some path is worth being stored
-	int coverts[2*MAX_PATHS]; // number of cells covered
-
-	int count_path[2]={1, 0};  // first arrays are size 1 (the initial status), second part of the arrays is size 0
-
-	parse_parameters(argc, argv, &begin_x, &begin_y, &max_paths_check);
+	int coverts[2*MAX_PATHS]; // number of cells covered 
+	int count_path[2]={1, 0};  // first arrays are size 1 (the initial status), second part of the arrays is size 0 
+	parse_parameters(argc, argv, &p);
 
 	int col;
 	while (1) {
@@ -57,12 +53,12 @@ int main(int argc, char *argv[])
 				return 1;
 			}
 			i+=1;
-			if (size_x==0)
+			if (p.size_x==0)
 			{
-				size_x=j;
+				p.size_x=j;
 			}
 			j=0;
-			size_y+=1;
+			p.size_y+=1;
 		}
 		else
 		{ 
@@ -85,12 +81,12 @@ int main(int argc, char *argv[])
 
 
 	// we init paths with -1, will make it easier to debug
-	for (i=0;i<max_paths_check;i++) {
+	for (i=0;i<p.max_paths_check;i++) {
 		for (j=0;j<MAX_PATH;j++) {
 			paths[i][j]=-1; } }
 
-	owneds[0][begin_x][begin_y]=1;
-	update_owned_2(board, owneds[0], board[begin_x][begin_y], size_x, size_y);
+	owneds[0][p.begin_x][p.begin_y]=1;
+	update_owned_2(board, owneds[0], board[p.begin_x][p.begin_y], &p);
 	coverts[0]=get_covert(owneds[0]); 
 	int win=0; 
 	int index_win=0;
@@ -109,14 +105,14 @@ int main(int argc, char *argv[])
 		if (path_length > MAX_PATH) { 
 			max_cov=-1;
 			max_cov_index=0;
-			for (i=0;i < max_paths_check; i++) 
+			for (i=0;i < p.max_paths_check; i++) 
 			{
-				if (coverts[(1-swap)*max_paths_check+i] > max_cov) {
-					max_cov_index=(1-swap)*max_paths_check+i;
+				if (coverts[(1-swap)*p.max_paths_check+i] > max_cov) {
+					max_cov_index=(1-swap)*p.max_paths_check+i;
 					max_cov=coverts[max_cov_index];
 				}
 			} 
-			print_path(paths[swap*max_paths_check+max_cov_index], path_length); 
+			print_path(paths[swap*p.max_paths_check+max_cov_index], path_length); 
 			fprintf(stderr, "path too long, %d, coverage of %d\n", path_length, max_cov); 
 			return 3;
 		}
@@ -124,10 +120,10 @@ int main(int argc, char *argv[])
 
 		max_cov=-1;
 		max_cov_index=0;
-		for (j=0;j < max_paths_check; j++) 
+		for (j=0;j < p.max_paths_check; j++) 
 		{
-			if (coverts[(1-swap)*max_paths_check+j] > max_cov) {
-				max_cov_index=(1-swap)*max_paths_check+j;
+			if (coverts[(1-swap)*p.max_paths_check+j] > max_cov) {
+				max_cov_index=(1-swap)*p.max_paths_check+j;
 				max_cov=coverts[max_cov_index];
 			}
 		} 
@@ -141,29 +137,29 @@ int main(int argc, char *argv[])
 		// for each existing path
 		for (i=0;i<count_path[swap];i++) // super wrong, or is it ? well it can be. and i'm screwed. // i need a list of path to skip because removed
 		{ 
-			last_col=paths[swap*max_paths_check+i][path_length-1];
+			last_col=paths[swap*p.max_paths_check+i][path_length-1];
 			col=min_col;
 			while ((!win) && (col <= max_col))
 			{ 
 				if ((path_length==0) || (col!=last_col)) // either it's the first path, either we change color, otherwise we shouldn't process that color
 				{
-					last_cov=coverts[swap*max_paths_check+i];
-					for (k=0;k<size_x;k++) {
-						for (l=0;l<size_y;l++) {
-							owned[k][l]=owneds[swap*max_paths_check+i][k][l];
+					last_cov=coverts[swap*p.max_paths_check+i];
+					for (k=0;k<p.size_x;k++) {
+						for (l=0;l<p.size_y;l++) {
+							owned[k][l]=owneds[swap*p.max_paths_check+i][k][l];
 						}
 					} 
-					update_owned_2(board, owned, col, size_x, size_y);
+					update_owned_2(board, owned, col, &p);
 					cov=get_covert(owned); 
 					if (cov>last_cov) { 
-						if (count_path[1-swap]==max_paths_check) { // number of path for the destination 
+						if (count_path[1-swap]==p.max_paths_check) { // number of path for the destination 
 							// lets find the worst path of the destination
-							min_cov=coverts[(1-swap)*max_paths_check];
+							min_cov=coverts[(1-swap)*p.max_paths_check];
 							j=0;
-							for (k=1;k<max_paths_check;k++) 
+							for (k=1;k<p.max_paths_check;k++) 
 							{
-								if (coverts[(1-swap)*max_paths_check+k] < min_cov) {
-									min_cov=coverts[(1-swap)*max_paths_check+j];
+								if (coverts[(1-swap)*p.max_paths_check+k] < min_cov) {
+									min_cov=coverts[(1-swap)*p.max_paths_check+j];
 									j=k;
 								}
 							} 
@@ -173,18 +169,18 @@ int main(int argc, char *argv[])
 							j=count_path[1-swap]; // index of where we'll write
 							count_path[1-swap]=j+1;
 						} 
-						for (k=0;k<size_x;k++) {
-							for (l=0;l<size_y;l++) {
-								owneds[(1-swap)*max_paths_check+j][k][l]=owned[k][l];
+						for (k=0;k<p.size_x;k++) {
+							for (l=0;l<p.size_y;l++) {
+								owneds[(1-swap)*p.max_paths_check+j][k][l]=owned[k][l];
 							}
 						} 
 						for (k=0;k<path_length;k++) {
-							paths[(1-swap)*max_paths_check+j][k]=paths[swap*max_paths_check+i][k]; // that seems wrong
+							paths[(1-swap)*p.max_paths_check+j][k]=paths[swap*p.max_paths_check+i][k]; // that seems wrong
 						} 
-						paths[(1-swap)*max_paths_check+j][path_length]=col; 
-						coverts[(1-swap)*max_paths_check+j]=cov;
+						paths[(1-swap)*p.max_paths_check+j][path_length]=col; 
+						coverts[(1-swap)*p.max_paths_check+j]=cov;
 						// check if it's a win
-						if (cov==size_x*size_y) { win=1; index_win=(1-swap)*max_paths_check+j; }; 
+						if (cov==p.size_x*p.size_y) { win=1; index_win=(1-swap)*p.max_paths_check+j; }; 
 					} 
 				}
 				col++;
