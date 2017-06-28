@@ -161,9 +161,9 @@ int main(int argc, char *argv[]) {
 		update_color(board, owned, col, &p, 1);
 		update_owned(board, owned, &p, 1);
 		if (p.display_stat) {
-			printf("\033[%d;%dH", p.size_y+2, 0);
 			print_coverage(p.size_y, i, col, get_covert(owned));
 		}
+		printf("\033[%d;%dH", p.size_y+1, 0);
 		fflush(stdout);
 		usleep(300000);
 	}
