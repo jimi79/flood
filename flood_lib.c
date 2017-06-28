@@ -44,8 +44,6 @@ int parse_parameters(int argc, char *argv[], struct params *p) { // use ->truc i
 			} 
 			if (!strcmp(code, "dn")) { 
 				p->display_color_number=(int) strtol(value, NULL, 10); // 1 for yes, 0 for no
-				printf("dn=%d\n", p->display_color_number);
-				usleep(1000000);
 				ok=1;
 			} 
 			if (!strcmp(code, "ds")) { 
@@ -106,7 +104,7 @@ int print_board(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZ
 				}
 				else
 				{ 
-					fprintf(out,"**");
+					fprintf(out,"  ");
 				}
 			}
 			else
