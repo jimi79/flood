@@ -85,6 +85,8 @@ int main(int argc, char *argv[])
 
 	int a_cov[path_length];
 	double a_per[path_length];
+	double a_diff[path_length];
+	double a_diff_per[path_length];
 
 	int cov;
 	int tot=p.size_x * p.size_y;
@@ -95,6 +97,14 @@ int main(int argc, char *argv[])
 		cov = get_covert(owned);
 		a_cov[i] = cov;
 		a_per[i] = cov * 100.0 / tot;
+		if (i==0) {
+			a_diff[i]=0;
+			a_diff_per[i]=0;
+		}
+		else {
+			a_diff[i] = a_cov[i] - a_cov[i-1];
+			a_diff_per[i] = a_diff[i] * 100.0 / tot; 
+		}
 	}
 
 
@@ -108,7 +118,6 @@ int main(int argc, char *argv[])
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
-		update_owned_2(board, owned, col, &p);
 		printf("%5d", a_cov[i]);
 	}
 
@@ -116,9 +125,23 @@ int main(int argc, char *argv[])
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
-		update_owned_2(board, owned, col, &p);
 		printf("%5.0f", a_per[i]);
 	}
+
+	printf("\ndifference: ");
+	for (i=0;i<path_length;i++)
+	{ 
+		col=path[i]; 
+		printf("%5.0f", a_diff[i]);
+	}
+
+	printf("\ndiff %%    : ");
+	for (i=0;i<path_length;i++)
+	{ 
+		col=path[i]; 
+		printf("%5.0f", a_diff_per[i]);
+	}
+		
 	
 	printf("\n");
 
