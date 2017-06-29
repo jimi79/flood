@@ -81,21 +81,45 @@ int main(int argc, char *argv[])
 
 	owned[p.begin_x][p.begin_y]=1;
 	update_owned_2(board, owned, board[p.begin_x][p.begin_y], &p);
-	char c;
-	printf("color   : ");
-	for (i=0;i<path_length;i++)
-	{
-		col=path[i];
-		printf("%4d", col);
-	}
 
-	printf("\ncoverage: ");
+
+	int a_cov[path_length];
+	double a_per[path_length];
+
+	int cov;
+	int tot=p.size_x * p.size_y;
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
 		update_owned_2(board, owned, col, &p);
-		printf("%4d", get_covert(owned));
+		cov = get_covert(owned);
+		a_cov[i] = cov;
+		a_per[i] = cov * 100.0 / tot;
 	}
+
+
+	printf(  "color     : ");
+	for (i=0;i<path_length;i++)
+	{
+		col=path[i];
+		printf("%5d", col);
+	} 
+	printf("\ncoverage  : ");
+	for (i=0;i<path_length;i++)
+	{ 
+		col=path[i]; 
+		update_owned_2(board, owned, col, &p);
+		printf("%5d", a_cov[i]);
+	}
+
+	printf("\npercentage: ");
+	for (i=0;i<path_length;i++)
+	{ 
+		col=path[i]; 
+		update_owned_2(board, owned, col, &p);
+		printf("%5.0f", a_per[i]);
+	}
+	
 	printf("\n");
 
 }
