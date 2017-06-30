@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y];
 	int path_length; 
 	int col, max_col;
-	parse_parameters(argc, argv, &p);
+	if (!parse_parameters(argc, argv, &p)) { exit(1); }
 
 	j=0;
 	int end=0;

@@ -16,9 +16,6 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 	int i,j;
 	int r;
-	//printf("%d\n", size_x);
-	//printf("%d\n", size_y);
-	//printf("%d\n", color_count);
 	for (i=0; i<size_y; i++) 
 	{
 		for (j=0; j<size_x; j++)

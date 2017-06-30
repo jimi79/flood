@@ -43,22 +43,30 @@ int parse_parameters(int argc, char *argv[], struct params *p) { // use ->truc i
 				ok=1;
 			} 
 			if (!strcmp(code, "dn")) { 
-				p->display_color_number=(int) strtol(value, NULL, 10); // 1 for yes, 0 for no
+				p->display_color_number=(int) strtol(value, NULL, 10)!=0; // 1 for yes, 0 for no
 				ok=1;
 			} 
 			if (!strcmp(code, "ds")) { 
-				p->display_star=(int) strtol(value, NULL, 10); // 1 for yes, 0 for no
+				p->display_star=(int) strtol(value, NULL, 10)!=0; // 1 for yes, 0 for no
 				ok=1;
 			} 
 			if (!strcmp(code, "dst")) { 
-				p->display_stat=(int) strtol(value, NULL, 10); // 1 for yes, 0 for no
+				p->display_stat=(int) strtol(value, NULL, 10)!=0; // 1 for yes, 0 for no
 				ok=1;
 			} 
 			
 		} else
-		{ fprintf(stderr, "Error, all parameters should be code=value. '%s' isn't\nUsage is flood_xxx bx=start_x_position by=start_y_position mp=max_paths_checked", argv[i]); return 1; };
+		{ fprintf(stderr, "Error: all parameters should be code=value. '%s' isn't\nUsage is flood_xxx bx=start_x_position by=start_y_position mp=max_paths_checked", argv[i]); return 1; };
 	};
-	return 0;
+
+	int ok=1;
+	if (p->begin_x > p->size_x) { fprintf(stderr, "Error: horizontal starting position is greater than horizontal size\n"); ok=0; };
+	if (p->begin_y > p->size_y) { fprintf(stderr, "Error: vertical starting position is greater than vertical size\n"); ok=0; };
+	if (p->size_x > MAX_SIZE_X) { fprintf(stderr, "Error: horizontal size greater than %d\n", MAX_SIZE_X); ok=0; };
+	if (p->size_y > MAX_SIZE_Y) { fprintf(stderr, "Error: vertical size greater than %d\n", MAX_SIZE_Y); ok=0; };
+	if (p->max_paths_check > MAX_PATHS) { fprintf(stderr, "Error: maximum number of paths checks is size greater than %d\n", MAX_PATHS); ok=0; };
+
+	return ok;
 }; 
 
 int color_print(int x, int y, int col, struct params *p) {

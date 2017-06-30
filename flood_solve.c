@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y]; // temp 'owned' to check if some path is worth being stored
 	int coverts[2*MAX_PATHS]; // number of cells covered 
 	int count_path[2]={1, 0};  // first arrays are size 1 (the initial status), second part of the arrays is size 0 
-	parse_parameters(argc, argv, &p);
 
 	int col;
 	while (1) {
@@ -78,6 +77,7 @@ int main(int argc, char *argv[])
 			j+=1; 
 		}
 	} 
+	if (!parse_parameters(argc, argv, &p)) { exit(1); }
 
 
 	// we init paths with -1, will make it easier to debug

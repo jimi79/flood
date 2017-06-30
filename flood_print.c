@@ -95,7 +95,6 @@ int main(int argc, char *argv[]) {
 	struct params p;
 	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_x=0;
 	p.max_paths_check=100; p.display_color_number=1; p.display_star=0; p.display_stat=0; 
-	parse_parameters(argc, argv, &p);
 
 	int i,j; i=0; j=0;
 	int end=0;
@@ -146,6 +145,7 @@ int main(int argc, char *argv[]) {
 			j+=1; 
 		}
 	} 
+	if (!parse_parameters(argc, argv, &p)) { exit(1); }
 
 	printf("\033[2J\033[1;1H");
 	owned[p.begin_x][p.begin_y]=1;
