@@ -10,7 +10,7 @@ install package "parallel" to run multiple instances of some code.
 
 or 
 
-parallel --eta -S 4/:,1/rpib,1/rpibp,4/sycorax,2/compaq,2/tosh "cat ~/local-docs/flood/challenge/in/flood{}|~/local-docs/flood/bin/flood_solve bx=9 by=9 mp=900" ::: {1..200} > answers 
+parallel --eta -S 4/:,1/rpib,1/rpibp,4/sycorax,2/compaq,2/tosh "cat ~/local-docs/flood/challenge/in/flood{}|~/local-docs/flood/bin/flood_solve bx=9 by=9 mp=900" ::: {1..10000} > answers 
 
 there is a program, called avg, that can show the average, and multiply by the end number of matrices to solve, to give an idea. usage : avg answers 10000
 
