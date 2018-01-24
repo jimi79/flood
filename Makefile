@@ -1,9 +1,9 @@
-BIN=./bin
+BIN=./
 SOURCE=./
-CFLAGS=-ggdb
+CFLAGS=-ggdb -rdynamic -funwind-tables
 LIBS=flood_lib.c 
 
-LIST=$(BIN)/flood_solve $(BIN)/flood_create $(BIN)/flood_print $(BIN)/flood_print_coverage
+LIST=flood_solve flood_create flood_print flood_print_coverage tests
 
 all: $(LIST)
 

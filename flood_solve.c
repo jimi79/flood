@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include "flood_lib.h"
 #include "const.h"
 
@@ -20,6 +21,8 @@ int print_path(int path[MAX_PATH], int path_length) // only for debug
 
 int main(int argc, char *argv[])
 { 
+	//signal(SIGSEGV, handler);   // install our handler -> backtrace sucks
+
 	FILE *in = stdin; 
 	int bufsize; 
 	char *buffer;
@@ -28,9 +31,8 @@ int main(int argc, char *argv[])
 	int min_col=9; // min col number
 	int max_col=0; // max col number
 
-	struct params p;
-	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_x=0;
-	p.max_paths_check=100; p.display_color_number=1; p.display_star=0; p.display_stat=0; 
+	struct parameters p;
+	p.size_x=0; p.size_y=0; 
 	static int paths[2*MAX_PATHS][MAX_PATH]; // longuest path will be 100
 	static int board[MAX_SIZE_X][MAX_SIZE_Y];
 	static int owneds[2*MAX_PATHS][MAX_SIZE_X][MAX_SIZE_Y];
@@ -77,8 +79,7 @@ int main(int argc, char *argv[])
 			j+=1; 
 		}
 	} 
-	if (!parse_parameters(argc, argv, &p)) { exit(1); }
-
+	if (!parse_parameters(argc, argv, &p)) { exit(1); } 
 
 	// we init paths with -1, will make it easier to debug
 	for (i=0;i<p.max_paths_check;i++) {
@@ -127,10 +128,6 @@ int main(int argc, char *argv[])
 				max_cov=coverts[max_cov_index];
 			}
 		} 
-		/*printf("----------------------------------------\n"); // some paths are missing
-		for (i=0;i<count_path[swap];i++) { print_path(paths[i+MAX_PATHS*swap], path_length); }
-		printf("----------------------------------------\n");*/
-
 		// we'll refill from 0 the destination
 		count_path[1-swap]=0;
 
@@ -139,7 +136,7 @@ int main(int argc, char *argv[])
 		{ 
 			last_col=paths[swap*p.max_paths_check+i][path_length-1];
 			col=min_col;
-			while ((!win) && (col <= max_col))
+			while ((!win) && (col <= max_col)) // here i do threads
 			{ 
 				if ((path_length==0) || (col!=last_col)) // either it's the first path, either we change color, otherwise we shouldn't process that color
 				{

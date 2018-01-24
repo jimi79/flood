@@ -21,7 +21,7 @@ int print_coverage(int height_board, int step, int color, int coverage) { // ste
 	printf("\033[0m\033[%d;%dH%d", row+1, col, coverage);
 }
 
-int update_owned(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], struct params *p, int live_print) {
+int update_owned(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p, int live_print) {
 	// for each pass, we count what we update
 	// at each pass, we look if it's owned. then for 8 directions, we look if not owned, and same color. if so, direction is owned
 	int updated=1; // wrong value just to start the loop
@@ -65,7 +65,7 @@ int update_owned(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SI
 	return 0;
 }
 
-int update_color(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], int col, struct params *p, int live_print) {
+int update_color(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], int col, struct parameters *p, int live_print) {
 	int i,j;
 	for (i=0;i<p->size_x;i++) {
 		for (j=0;j<p->size_y;j++) { 
@@ -92,12 +92,10 @@ int main(int argc, char *argv[]) {
 	static int board[MAX_SIZE_X][MAX_SIZE_Y];
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y];
 	int path_length, col, max_col;
-	struct params p;
-	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_x=0;
-	p.max_paths_check=100; p.display_color_number=1; p.display_star=0; p.display_stat=0; 
-
+	struct parameters p; 
 	int i,j; i=0; j=0;
 	int end=0;
+	p.size_x = 0; p.size_y = 0;
 	while (end==0) {
 		bufsize = fread(buffer, 1, 1, in);
 		if (bufsize==0) 
@@ -153,14 +151,14 @@ int main(int argc, char *argv[]) {
 	update_color(board, owned, col, &p, 0);
 	update_owned(board, owned, &p, 0);
 	print_board(board, owned, &p); // doesn't locate the cursor
-	if (p.display_stat) { init_print_coverage(p.size_y); }
+	if (p.display_stats) { init_print_coverage(p.size_y); }
 	char c;
 	for (i=0;i<path_length;i++)
 	{
 		col=path[i];
 		update_color(board, owned, col, &p, 1);
 		update_owned(board, owned, &p, 1);
-		if (p.display_stat) {
+		if (p.display_stats) {
 			print_coverage(p.size_y, i, col, get_covert(owned));
 		}
 		printf("\033[%d;%dH", p.size_y+1, 0);

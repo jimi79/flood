@@ -4,6 +4,7 @@ x=$1
 y=$2 
 cols=$3
 mp=$4
+display=1
 
 
 [ -z $x ] && x=19 # size x
@@ -15,11 +16,7 @@ bx=$(($x/2))
 by=$(($y/2))
 
 
-bin/flood_create $x $y $cols > /tmp/board
-cat /tmp/board | bin/flood_solve bx=$bx by=$by mp=$mp > /tmp/answer
-cat /tmp/answer /tmp/board | bin/flood_print bx=$bx by=$by ds=0 dst=0 dn=0
-#cat /tmp/answer /tmp/board | bin/flood_print_coverage bx=$bx by=$by
-#if [ $dst -eq 1 ]; then 
-#	answer=$(cat /tmp/answer)
-#	printf "\nAnswer is %s. Length is %d\n" $answer ${#answer}
-#fi
+./flood_create $x $y $cols > /tmp/board
+cat /tmp/board | ./flood_solve -bx $bx -by $by -mp $mp > /tmp/answer
+cat /tmp/answer /tmp/board | ./flood_print -bx $bx -by $by
+

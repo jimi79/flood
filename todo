@@ -58,3 +58,66 @@ step 2, xxx% covered
 
 test if a lot of boards are similars.
 maybe print out all boards after solving to get an idea
+
+----
+
+https://stackoverflow.com/questions/2525310/how-to-define-and-work-with-an-array-of-bits-in-c
+
+
+redo an analysis, maybe will start from scratch. meaning i'll have to change the print as well.
+
+array sucks. i need to rethink that as well. note : i don't need to store the board state each time, i just need the owned cells. so i need an array of boolean, or bits. or maybe an array of integer, i would read as bits. so that would be a much shorter array btw
+note : i may need 32 bits or 64 bits integer though, to do that. is that really better ?
+https://scicomp.stackexchange.com/questions/19353/how-to-change-one-bit-of-a-32-bit-integer-in-c <- play with bits
+
+wonder if i need that path*2 size thing to store all paths though
+
+not a splitted array, but 2 arrays with a pointer, so i just swap pointers. more readable
+
+
+threads later
+https://stackoverflow.com/questions/11624545/how-to-make-main-thread-wait-for-all-child-threads-finish
+
+
+
+
+shorter procedures, that takes a number in parameter that is the actual flood thing
+flood-print takes a parameter for the solution, so i can use a variable.
+flood-solve and flood-print takes a filename for the actual matrice to solve. can be -
+parameters should be like -blah something, not blah=
+thread for each step, one per color. each thread updates its own array (can a thread update a memory zone ?)
+i hope all arrays are in memory
+
+
+
+recap
+
+flood_create 11 11 | flood_solve -bx 5 -by 5 -mp 5000 # will return a string
+
+
+
+we have an array for the board
+we have a struct for each solution
+we have an array of solutions
+if one solution has to be removed, we swap pointers to replace the old soltion by another that has to be kept (the last one?), and we -- the count of total solutions
+if we have to add a solution, we add to the array. 
+we have to purge the array each time
+
+not sure how to do
+----
+
+
+
+we have a list of 'owned cells' and for each, we have a path, and a percentage of cells covered
+for each path, we need to do *colors - 1 other paths
+
+ok, for each path, i do :
+* check if i have one space free. if not, we find the worst, and we remove it, and we say we'll use that location to store the new 'ownership'
+* if free, we inc 'used_path' (we can display memory usage percentage evolution). i think i'll use a -verbose for that, that will replace display-stats
+
+except that static has more memory than dynamic..... but that doesn't mean i can't do what i wrote here
+
+i have to find an easy way to find the worst coverage. i mean for example, i could keep the best coverage somewhere, and when i check a new path, i could discard it if it's n% lower (n=50 by default)
+another pb : calculate new paths. if i can interact with current list, i'll destroy everythg. the system i setup is much better
+
+should i just not touch anythg (except maybe parameters), and just do threads ?

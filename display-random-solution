@@ -1,2 +1,0 @@
-#!/bin/bash
-i=$((($RANDOM + $RANDOM + $RANDOM + $RADNOM + $RANDOM) % 100000)); cat challenge/out.1200/answer$i challenge/in/flood$i | bin/flood_print bx=9 by=9 ; echo "flood $i"

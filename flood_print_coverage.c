@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	buffer=malloc(1);
 	int i=0,j=0;
 
-	struct params p;
+	struct parameters p;
 	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_y=0; 
 	p.max_paths_check=0;
 
