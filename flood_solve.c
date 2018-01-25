@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 			return 3;
 		}
 
-
+		// we check the path with the most coverage
 		max_cov=-1;
 		max_cov_index=0;
 		for (j=0;j < p.max_paths_check; j++) 
@@ -87,13 +87,15 @@ int main(int argc, char *argv[])
 		count_path[1-swap]=0;
 
 		// for each existing path
-		for (i=0;i<count_path[swap];i++) // super wrong, or is it ? well it can be. and i'm screwed. // i need a list of path to skip because removed
+		for (i=0;i<count_path[swap];i++)
 		{ 
 			last_col=paths[swap*p.max_paths_check+i][path_length-1];
 			col=p.min_col;
-			while ((!win) && (col <= p.max_col)) // here i do threads
+			// we try each color
+			while ((!win) && (col <= p.max_col)) // TODO : function
 			{ 
-				if ((path_length==0) || (col!=last_col)) // either it's the first path, either we change color, otherwise we shouldn't process that color
+				// if it's the first path, or we didn't change color, then we don't do anythg
+				if ((path_length==0) || (col!=last_col)) 
 				{
 					last_cov=coverts[swap*p.max_paths_check+i];
 					for (k=0;k<p.size_x;k++) {
@@ -103,10 +105,12 @@ int main(int argc, char *argv[])
 					} 
 					update_owned(board, owned, col, &p);
 					cov=get_covert(owned); 
+					// if that new color added to the path helped
 					if (cov>last_cov) { 
+						// if we reached the limit
 						if (count_path[1-swap]==p.max_paths_check) { // number of path for the destination 
 							// lets find the worst path of the destination
-							min_cov=coverts[(1-swap)*p.max_paths_check];
+							min_cov=coverts[(1-swap)*p.max_paths_check]; //TODO function to find the worst
 							j=0;
 							for (k=1;k<p.max_paths_check;k++) 
 							{
@@ -115,21 +119,26 @@ int main(int argc, char *argv[])
 									j=k;
 								}
 							} 
+							// we'll write at the j location, the worst of the lot
 						}
 						else
 						{
-							j=count_path[1-swap]; // index of where we'll write
+							// we'll write at a new location
+							j=count_path[1-swap]; 
 							count_path[1-swap]=j+1;
 						} 
-						for (k=0;k<p.size_x;k++) {
+						// we write the new owned array
+						for (k=0;k<p.size_x;k++) { // TODO function to copy array, path and coverts
 							for (l=0;l<p.size_y;l++) {
 								owneds[(1-swap)*p.max_paths_check+j][k][l]=owned[k][l];
 							}
 						} 
+						// we write the new path
 						for (k=0;k<path_length;k++) {
 							paths[(1-swap)*p.max_paths_check+j][k]=paths[swap*p.max_paths_check+i][k]; // that seems wrong
 						} 
 						paths[(1-swap)*p.max_paths_check+j][path_length]=col; 
+						// we write the new covert
 						coverts[(1-swap)*p.max_paths_check+j]=cov;
 						// check if it's a win
 						if (cov==p.size_x*p.size_y) { win=1; index_win=(1-swap)*p.max_paths_check+j; }; 

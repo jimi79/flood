@@ -103,8 +103,6 @@ int main(int argc, char *argv[]) {
 	char c[2];
 	c[1]='\0'; 
 	c[0]=p.path[3];
-	//printf("%s\n", &c[0]);
-	//return 0;
 	printf("\033[2J\033[1;1H"); // clear screen
 	if (p.display_stats) { init_print_coverage(p.size_y); }
 	print_board(board, owned, &p); // doesn't locate the cursor
@@ -112,7 +110,6 @@ int main(int argc, char *argv[]) {
 	{
 		c[0]=p.path[i];
 		col=(int) strtol(c, NULL, 10);
-		//printf("color : %d\n", col);
 		update_color(board, owned, col, &p, 1);
 		update_owned_color(board, owned, &p, 1);
 		if (p.display_stats) {
