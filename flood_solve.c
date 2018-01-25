@@ -23,14 +23,6 @@ int main(int argc, char *argv[])
 { 
 	//signal(SIGSEGV, handler);   // install our handler -> backtrace sucks
 
-	FILE *in = stdin; 
-	int bufsize; 
-	char *buffer;
-	buffer=malloc(1);
-	int i=0,j=0;
-	int min_col=9; // min col number
-	int max_col=0; // max col number
-
 	struct parameters p;
 	p.size_x=0; p.size_y=0; 
 	static int paths[2*MAX_PATHS][MAX_PATH]; // longuest path will be 100
@@ -39,55 +31,20 @@ int main(int argc, char *argv[])
 	static int owned[MAX_SIZE_X][MAX_SIZE_Y]; // temp 'owned' to check if some path is worth being stored
 	int coverts[2*MAX_PATHS]; // number of cells covered 
 	int count_path[2]={1, 0};  // first arrays are size 1 (the initial status), second part of the arrays is size 0 
-
 	int col;
-	while (1) {
-		bufsize = fread(buffer, 1, 1, in);
-		if (bufsize==0) 
-		{
-			break;
-		}
-		if (buffer[0]=='\n')
-		{
-			if (i > MAX_SIZE_Y) {
-				fprintf(stdout, "board too high\n");
-				return 1;
-			}
-			i+=1;
-			if (p.size_x==0)
-			{
-				p.size_x=j;
-			}
-			j=0;
-			p.size_y+=1;
-		}
-		else
-		{ 
-			if (j > MAX_SIZE_X) {
-				fprintf(stdout, "Board too wide\n");
-				return 1;
-			} 
-			col=(int) strtol(buffer, NULL, 10);
-			if (col > 7) {
-				fprintf(stdout, "Too much colors\n");
-				return 1;
-			} 
-			if (col < min_col) { min_col=col; }
-			if (col > max_col) { max_col=col; }
-			board[j][i]=col;
-			owneds[0][j][i]=0; // while i'm storing the boards, i'm also initializing owneds
-			j+=1; 
-		}
-	} 
 	if (!parse_parameters(argc, argv, &p)) { exit(1); } 
-
+	int i, j;
 	// we init paths with -1, will make it easier to debug
 	for (i=0;i<p.max_paths_check;i++) {
 		for (j=0;j<MAX_PATH;j++) {
-			paths[i][j]=-1; } }
+			paths[i][j]=-1; } } 
+	init_board_from_stdin(board, &p); 
 
-	owneds[0][p.begin_x][p.begin_y]=1;
-	update_owned_2(board, owneds[0], board[p.begin_x][p.begin_y], &p);
+	printf("size board loaded : %d, %d\n", p.size_x, p.size_y);
+
+	if (!test_parameters(&p)) { exit(1); } // check if parameters match the actual board size
+	init_owned(owneds[0], &p);
+	update_owned(board, owneds[0], board[p.begin_x][p.begin_y], &p);
 	coverts[0]=get_covert(owneds[0]); 
 	int win=0; 
 	int index_win=0;
@@ -100,8 +57,6 @@ int main(int argc, char *argv[])
 	int min_cov; // min coverage for a section. will be used to find out which line i want to remove to make room
 	int max_cov;
 	int max_cov_index; // index of the minimu coverage 
-
-
 	while (!win) {
 		if (path_length > MAX_PATH) { 
 			max_cov=-1;
@@ -135,8 +90,8 @@ int main(int argc, char *argv[])
 		for (i=0;i<count_path[swap];i++) // super wrong, or is it ? well it can be. and i'm screwed. // i need a list of path to skip because removed
 		{ 
 			last_col=paths[swap*p.max_paths_check+i][path_length-1];
-			col=min_col;
-			while ((!win) && (col <= max_col)) // here i do threads
+			col=p.min_col;
+			while ((!win) && (col <= p.max_col)) // here i do threads
 			{ 
 				if ((path_length==0) || (col!=last_col)) // either it's the first path, either we change color, otherwise we shouldn't process that color
 				{
@@ -146,7 +101,7 @@ int main(int argc, char *argv[])
 							owned[k][l]=owneds[swap*p.max_paths_check+i][k][l];
 						}
 					} 
-					update_owned_2(board, owned, col, &p);
+					update_owned(board, owned, col, &p);
 					cov=get_covert(owned); 
 					if (cov>last_cov) { 
 						if (count_path[1-swap]==p.max_paths_check) { // number of path for the destination 

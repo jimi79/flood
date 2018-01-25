@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
 	int path_length; 
 	int col, max_col;
 	if (!parse_parameters(argc, argv, &p)) { exit(1); }
+	if (!test_parameters(&p)) { exit(1); }
 
 	j=0;
 	int end=0;
@@ -80,7 +81,7 @@ int main(int argc, char *argv[])
 	} 
 
 	owned[p.begin_x][p.begin_y]=1;
-	update_owned_2(board, owned, board[p.begin_x][p.begin_y], &p);
+	update_owned(board, owned, board[p.begin_x][p.begin_y], &p);
 
 
 	int a_cov[path_length];
@@ -93,7 +94,7 @@ int main(int argc, char *argv[])
 	for (i=0;i<path_length;i++)
 	{ 
 		col=path[i]; 
-		update_owned_2(board, owned, col, &p);
+		update_owned(board, owned, col, &p);
 		cov = get_covert(owned);
 		a_cov[i] = cov;
 		a_per[i] = cov * 100.0 / tot;
