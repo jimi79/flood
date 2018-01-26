@@ -19,6 +19,25 @@ int print_path(int path[MAX_PATH], int path_length) // only for debug
 	return 0;
 }
 
+int find_min_covert(int coverts[2*MAX_PATHS], int swap, struct parameters *p)
+{
+	int max_path, min_cov, j, k;
+	max_path = p->max_paths_check; 
+	min_cov=coverts[(1-swap)*max_path];
+	j=0;
+	for (k=1;k<max_path;k++) 
+	{
+		if (coverts[(1-swap)*max_path+k] < min_cov) {
+			min_cov=coverts[(1-swap)*max_path+j];
+			j=k;
+		}
+	}
+	return j;
+} 
+// we'll write at the j location, the worst of the lot
+
+
+
 int main(int argc, char *argv[])
 { 
 	//signal(SIGSEGV, handler);   // install our handler -> backtrace sucks
@@ -109,17 +128,8 @@ int main(int argc, char *argv[])
 					if (cov>last_cov) { 
 						// if we reached the limit
 						if (count_path[1-swap]==p.max_paths_check) { // number of path for the destination 
-							// lets find the worst path of the destination
-							min_cov=coverts[(1-swap)*p.max_paths_check]; //TODO function to find the worst
-							j=0;
-							for (k=1;k<p.max_paths_check;k++) 
-							{
-								if (coverts[(1-swap)*p.max_paths_check+k] < min_cov) {
-									min_cov=coverts[(1-swap)*p.max_paths_check+j];
-									j=k;
-								}
-							} 
-							// we'll write at the j location, the worst of the lot
+							// lets find the worst path of the destination 
+							find_min_covert(coverts, swap, &p); 
 						}
 						else
 						{
