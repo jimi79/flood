@@ -17,6 +17,6 @@ by=$(($y/2))
 
 
 ./flood_create $x $y $cols > /tmp/board
-cat /tmp/board | ./flood_solve -bx $bx -by $by -mp $mp > /tmp/answer
-cat /tmp/answer /tmp/board | ./flood_print -bx $bx -by $by
+soluce=$(cat /tmp/board | ./flood_solve -bx $bx -by $by -mp $mp)
+cat /tmp/board | ./flood_print -bx $bx -by $by -path $soluce
 

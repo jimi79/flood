@@ -21,7 +21,7 @@ int print_coverage(int height_board, int step, int color, int coverage) { // ste
 	printf("\033[0m\033[%d;%dH%d", row+1, col, coverage);
 }
 
-int update_owned_color(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p, int live_print) {
+int update_owned_color(signed char board[MAX_SIZE_X][MAX_SIZE_Y], signed char owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p, int live_print) {
 	// for each pass, we count what we update
 	// at each pass, we look if it's owned. then for 8 directions, we look if not owned, and same color. if so, direction is owned
 	int updated=1; // wrong value just to start the loop
@@ -61,7 +61,7 @@ int update_owned_color(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][
 	return 0;
 }
 
-int update_color(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], int col, struct parameters *p, int live_print) {
+int update_color(signed char board[MAX_SIZE_X][MAX_SIZE_Y], signed char owned[MAX_SIZE_X][MAX_SIZE_Y], int col, struct parameters *p, int live_print) {
 	int i,j;
 	for (i=0;i<p->size_x;i++) {
 		for (j=0;j<p->size_y;j++) { 
@@ -84,9 +84,10 @@ int main(int argc, char *argv[]) {
 	int bufsize; 
 	char *buffer;
 	buffer=malloc(1);
-	static int path[MAX_PATH]; // longuest path will be 100
-	static int board[MAX_SIZE_X][MAX_SIZE_Y];
-	static int owned[MAX_SIZE_X][MAX_SIZE_Y]; int path_length, col, max_col;
+	static signed char path[MAX_PATH]; // longuest path will be 100
+	static signed char board[MAX_SIZE_X][MAX_SIZE_Y];
+	static signed char owned[MAX_SIZE_X][MAX_SIZE_Y];
+	int path_length, col, max_col;
 	struct parameters p; 
 	int i,j; i=0; j=0;
 	int end=0;
@@ -94,7 +95,6 @@ int main(int argc, char *argv[]) {
 	init_board_from_stdin(board, &p); 
 	init_owned(owned, &p); 
 	update_owned(board, owned, board[p.begin_x][p.begin_y], &p); 
-	printf("x:%d/%d, y:%d/%d\n", p.begin_x, p.size_x, p.begin_y, p.size_y);
 	if (!test_parameters(&p)) { exit(1); } 
 	owned[p.begin_x][p.begin_y]=1;
 	col=board[p.begin_x][p.begin_y];
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
 		}
 		printf("\033[%d;%dH", p.size_y+1, 0);
 		fflush(stdout);
-		usleep(300000);
+		usleep(100000);
 	}
 	printf("\033[0m\n");
 

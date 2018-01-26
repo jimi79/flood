@@ -22,9 +22,9 @@ int main(int argc, char *argv[])
 	p.size_x=0; p.size_y=0; p.begin_x=0; p.begin_y=0; 
 	p.max_paths_check=0;
 
-	static int path[MAX_PATH]; // longuest path will be 100
-	static int board[MAX_SIZE_X][MAX_SIZE_Y];
-	static int owned[MAX_SIZE_X][MAX_SIZE_Y];
+	static char path[MAX_PATH]; // longuest path will be 100
+	static signed char board[MAX_SIZE_X][MAX_SIZE_Y];
+	static signed char owned[MAX_SIZE_X][MAX_SIZE_Y];
 	int path_length; 
 	int col, max_col;
 	if (!parse_parameters(argc, argv, &p)) { exit(1); }
