@@ -20,7 +20,7 @@ void handler(int sig) {
   exit(1);
 }
 
-int get_covert(signed char owned[MAX_SIZE_X][MAX_SIZE_Y]) {
+int get_covert(int owned[MAX_SIZE_X][MAX_SIZE_Y]) {
 	int cpt=0;
 	int i,j;
 	for (i=0;i<MAX_SIZE_X;i++)
@@ -81,8 +81,10 @@ int parse_parameters(int argc, char *argv[], struct parameters *p, int path[MAX_
 			ok=1;
 		}	
 		if (!strcmp(&argv[i][0], "-path")) {
+			printf("1");
 			i++;
 			strcpy(p->path, &argv[i][0]);
+			printf("2");
 			ok=1;
 		}
 		if (ok == 0) {
@@ -126,7 +128,7 @@ int color_print(int x, int y, int col, struct parameters *p) {
 	return 0;
 }
 
-int update_owned(signed char board[MAX_SIZE_X][MAX_SIZE_Y], signed char owned[MAX_SIZE_X][MAX_SIZE_Y], int color, struct parameters *p) {
+int update_owned(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], int color, struct parameters *p) {
 // doesn't update the color of the board
 	int i, j, updated;
 	updated=1;
@@ -161,13 +163,12 @@ int update_owned(signed char board[MAX_SIZE_X][MAX_SIZE_Y], signed char owned[MA
 	} 
 }
 
-int init_board_from_stdin(signed char board[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {
+int init_board_from_stdin(int board[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {
 	FILE *in = stdin; 
 	int bufsize; 
 	char *buffer;
 	int i=0,j=0, col;
 	buffer=malloc(1);
-	p->size_x = 0; p->size_y = 0;
 	while (1) {
 		bufsize = fread(buffer, 1, 1, in);
 		if (bufsize==0) 
@@ -205,10 +206,9 @@ int init_board_from_stdin(signed char board[MAX_SIZE_X][MAX_SIZE_Y], struct para
 			j+=1; 
 		}
 	} 
-	p->surface = p->size_x * p->size_y;
 }
 
-int init_owned(signed char owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {
+int init_owned(int owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {
 	int i, j;
 	for (i=0; i < p->size_x; i++) {
 		for (j=0; i < p->size_y; i++) {
@@ -218,7 +218,7 @@ int init_owned(signed char owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) 
 	owned[p->begin_x][p->begin_y]=1;
 }
 
-int print_board(signed char board[MAX_SIZE_X][MAX_SIZE_Y], signed char owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {
+int print_board(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {
 	int i, j;
 	int bg, fg;
 	FILE *out=stdout;

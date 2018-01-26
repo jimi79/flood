@@ -3,14 +3,13 @@
 
 struct parameters
 {
-	char path[MAX_PATH];
+	int min_col, max_col;
 	int begin_x, begin_y;
+	int size_x, size_y;
+	int max_paths_check;
 	int display_color_number;
 	int display_stars;
 	int display_stats; // to display the color and percentage coverage along
-	int max_paths_check;
-	int min_col, max_col;
-	int size_x, size_y;
-	int surface;
+	char path[MAX_PATH];
 };
 
