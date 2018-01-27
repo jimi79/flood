@@ -168,6 +168,7 @@ int init_board_from_stdin(int board[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *
 	int i=0,j=0, col;
 	buffer=malloc(1);
 	p->size_x = 0; p->size_y = 0;
+	p->min_col = 9; p->max_col = 0;
 	while (1) {
 		bufsize = fread(buffer, 1, 1, in);
 		if (bufsize==0) 
@@ -260,6 +261,17 @@ int print_board(int board[MAX_SIZE_X][MAX_SIZE_Y], int owned[MAX_SIZE_X][MAX_SIZ
 	  }
 	  fprintf(out,"\n");
 	}
+	return 0;
+}
+
+int print_path(int path[MAX_PATH], int path_length) // only for debug
+{
+	int i;
+	for (i=0;i<path_length;i++)
+	{
+		if (path[i]!=-1) { printf("%d", path[i]); }
+	}
+	//printf("\n");
 	return 0;
 }
 
