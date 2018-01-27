@@ -15,3 +15,6 @@ parallel --eta -S 4/:,1/rpib,1/rpibp,4/sycorax,2/compaq,2/tosh "cat ~/local-docs
 there is a program, called avg, that can show the average, and multiply by the end number of matrices to solve, to give an idea. usage : avg answers 10000
 
 "i=123 ; cat challenge/out/answer$i challenge/in/flood$i | bin/flood_print bx=9 by=9" to display the solution for board 123
+
+
+note : compared to old version that is monothread (and maybe buggy), multithread is faster only when using more than 3 cpus (tested on sycorax)

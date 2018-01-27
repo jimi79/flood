@@ -12,5 +12,6 @@ struct parameters
 	int min_col, max_col;
 	int size_x, size_y;
 	int surface;
+	int max_cpu;
 };
 

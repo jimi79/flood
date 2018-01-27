@@ -112,13 +112,14 @@ void *thread_test_path(void *args) {
 int main(int argc, char *argv[])
 { 
 	//signal(SIGSEGV, handler);   // install our handler -> backtrace sucks
-	int max_cpu = 4;
-	struct t_th_par th_par[max_cpu];
-	pthread_t tid[max_cpu];
 
 	if (!parse_parameters(argc, argv, &p)) { exit(1); } 
-	int i, j;
+
+	struct t_th_par th_par[p.max_cpu];
+	pthread_t tid[p.max_cpu];
+
 	// we init paths with -1, will make it easier to DEBUG
+	int i, j;
 	for (i=0;i<p.max_paths_check;i++) {
 		for (j=0;j<MAX_PATH;j++) {
 			paths[i][j]=-1; } } 
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
 			int j = 0;
 			int allocated = 0;
 
-			while ((j < max_cpu) && (i < count)) { 
+			while ((j < p.max_cpu) && (i < count)) { 
 				allocated++;
 				th_par[j].index_path=i;
 				pthread_create(&tid[j], NULL, thread_test_path, &th_par[j]);

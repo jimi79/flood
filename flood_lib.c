@@ -42,6 +42,8 @@ int init_parameters(struct parameters *p) {
 	p->display_color_number = 0;
 	p->display_stars = 0;
 	p->display_stats = 0; 
+	p->surface = 0;
+	p->max_cpu = 4;
 }
 
 
@@ -85,6 +87,11 @@ int parse_parameters(int argc, char *argv[], struct parameters *p, int path[MAX_
 			strcpy(p->path, &argv[i][0]);
 			ok=1;
 		}
+		if (!strcmp(&argv[i][0], "-cpu")) {
+			i++;
+			p->max_cpu = (int) strtol(&argv[i][0], NULL, 10);
+			ok=1;
+		} 
 		if (ok == 0) {
 			printf("Unknown parameter %s\n", &argv[i][0]); 
 		}

@@ -1,6 +1,6 @@
 #!/bin/bash
 a=0
-mp=100
+mp=1000
 max=1000
 for i in $(seq 1 $max);do
 	b=$(./flood_create 19 19 7 | ./flood_solve -bx 9 -by 9 -mp $mp | wc -c)
