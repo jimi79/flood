@@ -1,0 +1,43 @@
+#!/bin/bash
+old=0
+[ -d bin ] && old=1
+length=0
+mp=600
+#mp=60
+i=1
+debug=0
+[ -f results ] && rm results
+di=0 # at 10, we display the result to double check that works 
+tot=100000
+begin=$(date +%s)
+est_end_s="N/A"
+while [ $i -le $tot ];do
+	if [ $old -eq 1 ];then
+		b=$(cat challenge/in/flood$i | ./bin/flood_solve bx=9 by=9 mp=$mp)
+	else
+		b=$(cat challenge/in/flood$i | ./flood_solve -bx 9 -by 9 -mp $mp -cpu 1)
+	fi
+
+	echo $b >> results
+	c=$(echo -n $b|wc -c)
+	length=$(($length + $c))
+	s=$(printf "5k %d %d / p" $length $i|dc)
+	if [ $di -eq 0 ];then
+		if [ $debug -eq 1 ];then
+			if [ $old -eq 1 ];then
+				(echo $b ; cat challenge/in/flood$i) | ./bin/flood_print bx=9 by=9 
+
+			else
+				cat challenge/in/flood$i | ./flood_print -bx 9 -by 9 -path $b
+			fi
+		fi
+		a=$((($(date +%s) - $begin) * $tot / $i)) 
+		est_end=$(($(date +%s) + $a))
+		est_end_s=$(date -d @$est_end)
+
+	fi
+	di=$(($di + 1))
+	i=$(($i+1))
+	[ $di -gt 1 ] && di=0
+	printf "%d/%d, avg = %s, end in %s\n" $i $tot $s "$est_end_s"
+done
