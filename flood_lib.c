@@ -81,10 +81,8 @@ int parse_parameters(int argc, char *argv[], struct parameters *p, int path[MAX_
 			ok=1;
 		}	
 		if (!strcmp(&argv[i][0], "-path")) {
-			printf("1");
 			i++;
 			strcpy(p->path, &argv[i][0]);
-			printf("2");
 			ok=1;
 		}
 		if (ok == 0) {
@@ -169,6 +167,7 @@ int init_board_from_stdin(int board[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *
 	char *buffer;
 	int i=0,j=0, col;
 	buffer=malloc(1);
+	p->size_x = 0; p->size_y = 0;
 	while (1) {
 		bufsize = fread(buffer, 1, 1, in);
 		if (bufsize==0) 
@@ -206,6 +205,8 @@ int init_board_from_stdin(int board[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *
 			j+=1; 
 		}
 	} 
+	p->surface = p->size_x * p->size_y;
+	return 1;
 }
 
 int init_owned(int owned[MAX_SIZE_X][MAX_SIZE_Y], struct parameters *p) {

@@ -7,6 +7,9 @@ LIST=flood_solve flood_create flood_print flood_print_coverage tests
 
 all: $(LIST)
 
+clean:
+	-rm $(LIST)
+
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
