@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in {1..32};do
+	a=$(date +%s) 
+	./flood_create 50 30 7|./flood_solve -cpu $i -mp 500 > /dev/null
+	b=$(date +%s)
+	printf "%d,%d\n" $i $(($b-$a)) 
+done 
