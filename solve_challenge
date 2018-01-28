@@ -3,7 +3,6 @@ old=0
 [ -d bin ] && old=1
 length=0
 mp=600
-#mp=60
 i=1
 debug=0
 [ -f results ] && rm results
