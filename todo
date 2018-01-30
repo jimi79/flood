@@ -121,3 +121,50 @@ i have to find an easy way to find the worst coverage. i mean for example, i cou
 another pb : calculate new paths. if i can interact with current list, i'll destroy everythg. the system i setup is much better
 
 should i just not touch anythg (except maybe parameters), and just do threads ?
+
+
+
+-----
+
+rearrange code so it's one object to solve one cube. meaning no global variables.
+find a way to duplicate units to switch from one cube solved with multi thread and one cube solved with mono thread
+
+then programe multiples cubes at once, with some parameter like 'file file file' etc, and that will be solved in multi threads. each answer will be written in the output for each cube (one cube -> oneline output, two cubes, first output is first cube, 2nd is second cube)
+
+then check for mpi that thing
+
+
+--
+
+
+http://people.sc.fsu.edu/~jburkardt/c_src/mpi/mpi.html
+
+
+play with mpi and thread, to process like thousands of additions of n numbers, and thread them and mpi them. maybe solving pi yeah, multithread. but without bcast.
+
+will a thread within a thread work ?
+
+
+
+create an object to store the initial matrice, and all global var. put also in that object the size_x, surface, etc. t_parameters should store only settings to calculate, like max mp, bx, by.
+
+create a function to solve an input matrice (from begin to end, with appropriate t_parameters and t_matrice)
+
+create a program to solve n matrices
+
+
+OR
+
+change program so it can solve one matrice with multiple computers, and linearise matrice solving. Not sure it's worth it, it's a lot of datas compared to the process -> no
+
+
+if i solve multiple matrices at once, i don't need to create threads to update...... i have to make a choice here. but it's faster with threads ? by like 10%. for no reason.
+
+----------------------------------------------------
+
+1. mpi to solve one matrice, with lots of MP
+2. find a way to store bits for the 'owned' thing, which is the biggest array i reckon
+3. use struct to store that garbage i use to solve
+4. create a type to update one color, that would be a subset of 'owneds'. like update(board, owneds[4], color=5, parameters) // do i need parameters ?
+
+

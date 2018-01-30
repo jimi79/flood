@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 struct parameters p;
 static int paths[2*MAX_PATHS][MAX_PATH]; // longuest path will be 100///copy array by bytes
 static int board[MAX_SIZE_X][MAX_SIZE_Y];
@@ -33,8 +31,6 @@ void *thread_test_path(void *args) {
 	int i=0;
 	struct t_th_par *th_par = (struct t_th_par *) args;
 	int index_path = th_par->index_path; 
-
-	//pthread_mutex_lock(&test);
 
 	if (DEBUG) { printf("evaluating path %d\n", index_path); }
 
