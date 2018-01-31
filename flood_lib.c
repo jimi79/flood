@@ -1,9 +1,10 @@
+#include "const.h"
+#include "flood_type.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/sysinfo.h>
 #include <unistd.h>
-#include "const.h"
-#include "flood_type.h"
 
 int get_covert(int owned[MAX_SIZE_X][MAX_SIZE_Y]) {
 	int cpt=0;
@@ -28,7 +29,8 @@ int init_parameters(struct parameters *p) {
 	p->display_stars = 0;
 	p->display_stats = 0; 
 	p->surface = 0;
-	p->max_cpu = 4;
+	p->max_cpu = get_nprocs();
+	//printf("count of cpu = %d\n", p->max_cpu);
 }
 
 

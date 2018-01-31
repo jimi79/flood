@@ -1,3 +1,4 @@
+# vim: syntax=none nosmartindent:
 Define what bin i will do. like one to generate an array (will return a list of strings), one to parse it (will need to read stdin) and solve it, one to display it, and so on.
 
 
@@ -167,4 +168,10 @@ if i solve multiple matrices at once, i don't need to create threads to update..
 3. use struct to store that garbage i use to solve
 4. create a type to update one color, that would be a subset of 'owneds'. like update(board, owneds[4], color=5, parameters) // do i need parameters ?
 
+
+----
+change so that it uses parameters to open file. if file = -, then stdin
+can have multiples files (-file a,b,c,d,etc)
+if multiples files, then use mpi if available (is there a variable to count the number of process availables ?) -> noooo, all of that is just 'parallel'. although file=filename is good.
+add an option 'delete' to delete the file once done, so i can do a bash that takes any file left. pb : all process will process the same file.
 
