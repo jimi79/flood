@@ -25,7 +25,6 @@ struct t_th_par {
 };
 
 pthread_mutex_t mutex_write_res = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t test = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread_test_path(void *args) {
 	int i=0;
@@ -55,7 +54,6 @@ void *thread_test_path(void *args) {
 			memcpy(owned[0], owneds[index_in+index_path][0], MAX_SURFACE*sizeof(int));  
 			if (DEBUG) { printf("evaluating path %d, color %d\n", index_path, color); }
 			update_owned(board, owned, color, &p);
-			if (DEBUG) { printf("locking test\n"); }
 			cov=get_covert(owned); 
 			// if that new color added to the path helped
 			if (cov>last_cov) { 
@@ -100,7 +98,6 @@ void *thread_test_path(void *args) {
 		}
 		color++;
 	}
-	//pthread_mutex_unlock(&test);
 }
 
 
