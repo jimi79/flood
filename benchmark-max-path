@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cores=2
+
+function calc_avg {
+# average $1 tries with a max path of $2
+	a=0
+	for i in $(seq 1 $max);do
+		b=$(./flood_create 19 19 7 | ./flood_solve -bx 9 -by 9 -mp $mp -cpu $cores| wc -c)
+		a=$(($a + $b - 1)) # flood_solve send also a carriage return
+	done 
+	printf "5k %d %d / p" $a $i|dc
+}
+
+for mp in 1 10 100 250 500 750 1000 2500 5000 7500 10000;do
+	avg=$(calc_avg 10 $mp)
+	printf "%d,%s\n" $mp $avg
+done
