@@ -17,4 +17,4 @@ there is a program, called avg, that can show the average, and multiply by the e
 "i=123 ; cat challenge/out/answer$i challenge/in/flood$i | bin/flood_print bx=9 by=9" to display the solution for board 123
 
 
-note : compared to old version that is monothread (and maybe buggy), multithread is faster only when using more than 3 cpus (tested on sycorax)
+note : compared to old version that is monothread (and maybe buggy), multithread is faster only when using more than 3 cpus
