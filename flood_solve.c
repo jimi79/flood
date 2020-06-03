@@ -90,8 +90,7 @@ void *thread_test_path(void *args) {
 				// check if it's a win
 				if (DEBUG) { printf("cover %d for path=", cov); 
 					print_path(paths[index_out+j], path_length+1);
-				}
-
+				} 
 				pthread_mutex_unlock(&mutex_write_res);
 				if (cov==p.size_x*p.size_y) { win=1; index_win=(1-swap)*p.max_paths_check+j; }; 
 			} 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cores=2
+cores=4
 
 function calc_avg {
 # average $1 tries with a max path of $2

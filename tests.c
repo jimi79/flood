@@ -3,8 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "flood_lib.h"
-#include "const.h"
-
+#include "const.h" 
 
 int add_parameter(char *params[], char *value, int *count) { 
 	params[*count] = malloc((strlen(value) + 1) * sizeof(char));
@@ -69,13 +68,11 @@ int test_parse_parameters_2() {
 		free(params[i]);
 	}
 	return ok; 
-}
-
+} 
 
 int test_test_parameters() {
 	return 1;
 }
-
 
 int test_test() {
 	printf("coucou\n");
